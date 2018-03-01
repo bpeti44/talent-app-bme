@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "111113373615",
+    "firebase_url": "https://talentapp-c373a.firebaseio.com",
+    "project_id": "talentapp-c373a",
+    "storage_bucket": "talentapp-c373a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111113373615:android:450802b5b40a23a4",
+        "android_client_info": {
+          "package_name": "com.bartonpeter.talentapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111113373615-hfprlc9n1jj0k84uvqlsgn8ac82akssf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bartonpeter.talentapp",
+            "certificate_hash": "1a3b131eb5bb4469f4c510a6f8dfa966ddd13aff"
+          }
+        },
+        {
+          "client_id": "111113373615-jt1m8oh5kdtsl2pf8v03t3mbhmueuoam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlL5vJZhTV_SwUbeIxCVxgQjy81G_v0Vc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111113373615-jt1m8oh5kdtsl2pf8v03t3mbhmueuoam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
