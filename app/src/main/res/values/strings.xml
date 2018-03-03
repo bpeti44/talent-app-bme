@@ -11,4 +11,6 @@
     <string name="error_invalid_password">Invalid password</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_invalid_email">The given email is invalid</string>
+    <string name="upload">Upload</string>
+    <string name="choose">Choose</string>
 </resources>

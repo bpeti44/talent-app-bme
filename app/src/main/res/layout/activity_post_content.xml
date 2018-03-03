@@ -8,24 +8,37 @@
     tools:context="com.bartonpeter.talentapp.PostContentActivity">
 
 
-    <EditText
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="What's in your head?"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
-        />
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/postButton"
-        android:onClick="postContent"
-        android:layout_centerHorizontal="true"
-        android:text="Post"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/content"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonChoose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/choose"
+            android:onClick="showFileChooser"/>
+
+        <Button
+            android:id="@+id/buttonUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/upload"
+            android:onClick="upload"/>
+
+    </LinearLayout>
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout" />
+
 
 
 </RelativeLayout>
