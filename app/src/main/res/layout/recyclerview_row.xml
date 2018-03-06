@@ -21,6 +21,11 @@
         android:textStyle="italic"
         android:text="This is the post"/>
 
+    <VideoView
+        android:id="@+id/row_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp" />
+
 
 
 
