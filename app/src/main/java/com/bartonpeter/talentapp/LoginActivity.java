@@ -87,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("FlashChat", "signInWithEmail onComplete()" + task.isSuccessful());
+                Log.d("TalentApp", "signInWithEmail onComplete()" + task.isSuccessful());
 
                 if (!task.isSuccessful()) {
-                    Log.d("FlashChat", "signInWithEmail failed: " + task.getException());
+                    Log.d("TalentApp", "signInWithEmail failed: " + task.getException());
                     showErrorDialoge("Invalid password or username");
 
                 } else {

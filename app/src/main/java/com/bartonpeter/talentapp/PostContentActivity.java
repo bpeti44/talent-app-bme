@@ -13,11 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,12 +38,17 @@ public class PostContentActivity extends AppCompatActivity {
 
     private EditText mContentText;
     private Button mPostButton;
-    private DatabaseReference mDatabaseReference;
     private String mUsername;
-    private Uri mUri;
     private VideoView mVideoView;
+
+    private Uri mUri;
+    private DatabaseReference mDatabaseReference;
     private StorageReference videoRef;
     private StorageReference mStorageReference;
+    private FirebaseAuth mAuth;
+
+    public static String Storage_Path = "All_Video_Uploads/";
+    public static String Database_Path = "All_Video_Uploads_Database/";
 
 
     @Override
@@ -49,24 +57,22 @@ public class PostContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_content);
 
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                mUsername = null;
-            } else {
-                mUsername = extras.getString(USER_KEY);
-            }
-        } else {
-            mUsername = (String) savedInstanceState.getSerializable(USER_KEY);
-        }
+
+
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String email = currentUser.getEmail();
+        int index = email.indexOf('@');
+        mUsername = email.substring(0, index);
 
         mVideoView = findViewById(R.id.videoView);
         Log.d("TalentApp","username: " + mUsername);
 
     }
-
 
     public void postContent(View v){
 
@@ -77,12 +83,9 @@ public class PostContentActivity extends AppCompatActivity {
             mDatabaseReference.child("posts").push().setValue(content);
             mContentText.setText("");
             Toast.makeText(this,"Your post is uploaded!",Toast.LENGTH_SHORT).show();
-            Log.d("TalentApp","post: " + content.getPost() + "author: " + content.getAuthor());
+            Log.d("TalentApp","post: " + content.getPost() + "username: " + content.getAuthor());
         }
     }
-
-
-
 
     public void showFileChooser(View v){
         Intent intent = new Intent();
@@ -99,11 +102,58 @@ public class PostContentActivity extends AppCompatActivity {
         if(resultCode == RESULT_OK){
             mUri  = data.getData();
             try{
+                MediaController mediaController = new MediaController(this);
+                mediaController.setAnchorView(mVideoView);
+                mVideoView.setMediaController(mediaController);
                 mVideoView.setVideoURI(mUri);
                 mVideoView.start();
             }catch(Exception e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void uploadVideoToFirebaseStorage(View v){
+        if(mUri != null){
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference storageReference2nd = mStorageReference.child(Storage_Path + System.currentTimeMillis() + ".mp4");
+
+            storageReference2nd.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Video Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                    VideoUploadInfo videoUploadInfo = new VideoUploadInfo(mUsername, taskSnapshot.getDownloadUrl().toString());
+                    String VideoUploadID = mDatabaseReference.push().getKey();
+
+                    mDatabaseReference.child(VideoUploadID).setValue(videoUploadInfo);
+
+                    Intent intent = new Intent(PostContentActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred())
+                            / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Uploaded: " + (int) progress + "%");
+                }
+            });
+        }else{
+            Log.d("TalentApp","No file");
+            showErrorDialoge("Please select a video");
         }
     }
 
@@ -120,6 +170,7 @@ public class PostContentActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"Video uploaded",Toast.LENGTH_LONG);
+
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -142,10 +193,6 @@ public class PostContentActivity extends AppCompatActivity {
             showErrorDialoge("Please select a video");
         }
     }
-
-
-
-
 
     private void showErrorDialoge(String message){
         new AlertDialog.Builder(this)

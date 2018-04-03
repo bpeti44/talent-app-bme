@@ -1,23 +1,23 @@
 package com.bartonpeter.talentapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by petib on 2018. 02. 21..
@@ -31,27 +31,30 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     private ArrayList<DataSnapshot> mSnapshotList;
     private String mUsername;
     private Uri mUri;
+    private List<VideoUploadInfo> mVideoUploadInfoList;
+    private static Context context;
 
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView author;
-        public TextView body;
+        public TextView username;
         public VideoView videoview;
+        public RatingBar ratingbar;
+        //public ImageView videoImageView;
 
-        public ViewHolder(View v){
+         public ViewHolder(View v){
             super(v);
-            author = v.findViewById(R.id.row_author_text_view);
-            body = v.findViewById(R.id.row_post_text_view);
+            username = v.findViewById(R.id.row_author_text_view);
             videoview = v.findViewById(R.id.row_video_view);
+            ratingbar = v.findViewById(R.id.row_rating_bar);
+            //videoImageView = v.findViewById(R.id.row_video_pre_view);
         }
     }
 
 
-
-    public PostListAdapter(List<Content> dataset, String username) {
-        mDataset = dataset;
-        mUsername = username;
+    public PostListAdapter(Context context, List<VideoUploadInfo> videoList) {
+        this.context = context;
+        this.mVideoUploadInfoList = videoList;
     }
 
 
@@ -66,54 +69,59 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(PostListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostListAdapter.ViewHolder holder, int position) {
 
-        Content content = mDataset.get(position);
-        holder.author.setText(content.getAuthor());
-        holder.body.setText(content.getPost());
+        VideoUploadInfo videoUploadInfo = mVideoUploadInfoList.get(position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.username.setText(videoUploadInfo.getUsername());
+
+        try{
+            Uri uri = Uri.parse(videoUploadInfo.getVideoURL());
+            holder.videoview.setVideoURI(uri);
+            holder.videoview.seekTo(100);
+            holder.videoview.pause();
+
+        }catch(Exception e){
+            Log.d("TalentApp","Error: " + e.getMessage());
+        }
+
+
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TalentApp","ez persze megy bazmeg");
+
+                if(holder.videoview.isPlaying()){
+                    holder.videoview.pause();
+                    Log.d("TalentApp","videoView onClick - pause");
+                }else {
+                    holder.videoview.start();
+                    Log.d("TalentApp","videoView onClick - play");
+                }
+            }
+        });
+
+        holder.videoview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+                Log.d("TalentApp","videoView onClick");
+
+                if(holder.videoview.isPlaying()){
+                    holder.videoview.pause();
+                    Log.d("TalentApp","videoView onClick - pause");
+                }else {
+                    holder.videoview.start();
+                    Log.d("TalentApp","videoView onClick - play");
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mVideoUploadInfoList.size();
     }
-
-
-
-
-        /*private ChildEventListener mListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            mSnapshotList.add(dataSnapshot);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };*/
 
 }

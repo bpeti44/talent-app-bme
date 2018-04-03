@@ -11,22 +11,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Author"/>
 
-    <TextView
-        android:id="@+id/row_post_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="italic"
-        android:text="This is the post"/>
 
     <VideoView
         android:id="@+id/row_video_view"
         android:layout_width="match_parent"
         android:layout_height="250dp" />
 
-
+    <RatingBar
+        android:id="@+id/row_rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5" />
 
 
 </LinearLayout>
