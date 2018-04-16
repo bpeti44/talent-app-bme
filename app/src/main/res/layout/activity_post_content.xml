@@ -34,6 +34,16 @@
 
     </LinearLayout>
 
+
+    <Button
+        android:id="@+id/buttonCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/take_a_photo"
+        android:layout_below="@id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:onClick="captureVideo"/>
+
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"

@@ -13,4 +13,5 @@
     <string name="error_invalid_email">The given email is invalid</string>
     <string name="upload">Upload</string>
     <string name="choose">Choose</string>
+    <string name="take_a_photo">Take a photo</string>
 </resources>
