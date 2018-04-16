@@ -8,6 +8,7 @@ public class VideoUploadInfo {
 
     public String username;
     public String videoURL;
+    public double rating;
 
     public VideoUploadInfo(){
 
@@ -26,4 +27,13 @@ public class VideoUploadInfo {
     public String getVideoURL() {
         return videoURL;
     }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
 }

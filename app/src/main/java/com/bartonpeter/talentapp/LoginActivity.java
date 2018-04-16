@@ -28,13 +28,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String USER_NAME_KEY = "username";
 
-
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private Button mLoginButton;
     private Button mRegisterButton;
     private FirebaseAuth mAuth;
-
 
 
     @Override
@@ -65,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
-
 
     public void signInExistingUser(View v){
         attemptLogin();

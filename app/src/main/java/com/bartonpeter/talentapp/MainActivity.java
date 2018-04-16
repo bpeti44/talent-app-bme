@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String USER_KEY = "USER_KEY";
 
 
-    private List<Content> mContentList;
     private List<VideoUploadInfo> mVideoList;
     private String mUsername;
     private DatabaseReference mDatabaseReference;
@@ -34,13 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Getting the username
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String email = currentUser.getEmail();
@@ -53,17 +51,14 @@ public class MainActivity extends AppCompatActivity {
         mDatabaseReference = database.getReference(PostContentActivity.Database_Path);
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
-        //mContentList = new ArrayList<>();
         mVideoList = new ArrayList<>();
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
 
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //mAdapter = new PostListAdapter(mContentList, mUsername);
         mAdapter = new PostListAdapter(getApplicationContext(), mVideoList);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -105,19 +100,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
-
-
-
-
-
 
     public void postContentActivity(View v){
         Intent intent = new Intent(this,PostContentActivity.class);
         startActivity(intent);
     }
-
 }

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
@@ -26,7 +27,6 @@ import java.util.List;
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
 
     private Activity mActivity;
-    private List<Content> mDataset;
     private DatabaseReference mDatabaseReference;
     private ArrayList<DataSnapshot> mSnapshotList;
     private String mUsername;
@@ -35,28 +35,23 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     private static Context context;
 
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public VideoView videoview;
         public RatingBar ratingbar;
-        //public ImageView videoImageView;
 
          public ViewHolder(View v){
             super(v);
             username = v.findViewById(R.id.row_author_text_view);
             videoview = v.findViewById(R.id.row_video_view);
             ratingbar = v.findViewById(R.id.row_rating_bar);
-            //videoImageView = v.findViewById(R.id.row_video_pre_view);
         }
     }
-
 
     public PostListAdapter(Context context, List<VideoUploadInfo> videoList) {
         this.context = context;
         this.mVideoUploadInfoList = videoList;
     }
-
 
     @Override
     public PostListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -67,7 +62,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
         return new ViewHolder(rowLayout);
     }
-
     @Override
     public void onBindViewHolder(final PostListAdapter.ViewHolder holder, int position) {
 
@@ -89,8 +83,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TalentApp","ez persze megy bazmeg");
-
                 if(holder.videoview.isPlaying()){
                     holder.videoview.pause();
                     Log.d("TalentApp","videoView onClick - pause");
@@ -101,22 +93,35 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
             }
         });
 
-        holder.videoview.setOnClickListener(new View.OnClickListener() {
+        holder.ratingbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-
-
-                Log.d("TalentApp","videoView onClick");
-
-                if(holder.videoview.isPlaying()){
-                    holder.videoview.pause();
-                    Log.d("TalentApp","videoView onClick - pause");
-                }else {
-                    holder.videoview.start();
-                    Log.d("TalentApp","videoView onClick - play");
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    v.performClick();
+                    Log.d("TalentApp","ratingbar ontouch");
                 }
+                return true;
             }
         });
+
+        holder.videoview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    if (holder.videoview.isPlaying()) {
+                        holder.videoview.pause();
+                        Log.d("TalentApp", "videoView onClick - pause");
+                    } else {
+                        holder.videoview.start();
+                        Log.d("TalentApp", "videoView onClick - play");
+                    }
+                }
+                return true;
+            }
+        });
+
     }
 
     @Override
