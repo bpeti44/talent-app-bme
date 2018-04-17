@@ -16,33 +16,38 @@
         android:layout_below="@id/videoView"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonChoose"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="showFileChooser"
             android:text="@string/choose"
-            android:onClick="showFileChooser"/>
+            android:src="@drawable/ic_file_video_black_36dp"/>
 
-        <Button
+        <ImageButton
+            android:id="@+id/buttonCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="captureVideo"
+            android:src="@drawable/ic_camera_alt_black_36dp"/>
+
+        <ImageButton
             android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/upload"
-            android:onClick="uploadVideoToFirebaseStorage"/>
+            android:onClick="uploadVideoToFirebaseStorage"
+            android:src="@drawable/ic_file_upload_black_36dp"/>
 
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/buttonCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/take_a_photo"
-        android:layout_below="@id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:onClick="captureVideo"/>
+
+
+
+
 
     <VideoView
         android:id="@+id/videoView"
