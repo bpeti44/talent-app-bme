@@ -14,7 +14,7 @@
         android:gravity="right"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
-        android:descendantFocusability="blocksDescendants">
+        >
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="0dp"
@@ -29,13 +29,17 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/nested_scroll_view"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="543dp"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:focusable="false"/>
     </android.support.v4.widget.NestedScrollView>
 
 

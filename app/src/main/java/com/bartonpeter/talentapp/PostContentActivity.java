@@ -83,6 +83,7 @@ public class PostContentActivity extends AppCompatActivity {
 
     }
 
+    //Intent for opening file explorer
     public void showFileChooser(View v){
         Intent intent = new Intent();
         intent.setType("video/*");

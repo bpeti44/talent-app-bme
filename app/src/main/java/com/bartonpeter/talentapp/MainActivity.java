@@ -2,6 +2,7 @@ package com.bartonpeter.talentapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,31 +39,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NestedScrollView nested = findViewById(R.id.nested_scroll_view);
+        //nested.fullScroll(View.FOCUS_UP);
+
         //Getting the username
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String email = currentUser.getEmail();
-        int index = email.indexOf('@');
-        mUsername = email.substring(0, index);
-
-
+        mUsername = getCurrentUsername();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabaseReference = database.getReference(PostContentActivity.Database_Path);
-
         mRecyclerView = findViewById(R.id.my_recycler_view);
+        mRecyclerView.setFocusable(false);
         mVideoList = new ArrayList<>();
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setReverseLayout(true);
+        //mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         mAdapter = new PostListAdapter(getApplicationContext(), mVideoList);
         mRecyclerView.setAdapter(mAdapter);
-
-
         mDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -106,4 +101,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,PostContentActivity.class);
         startActivity(intent);
     }
+
+    public String getCurrentUsername(){
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String email = currentUser.getEmail();
+        int index = email.indexOf('@');
+        String username = email.substring(0, index);
+        return username;
+    }
+
 }
