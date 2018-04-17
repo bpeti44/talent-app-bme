@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         NestedScrollView nested = findViewById(R.id.nested_scroll_view);
-        //nested.fullScroll(View.FOCUS_UP);
+        nested.setFocusable(false);
+
+        RatingBar ratingBar = findViewById(R.id.row_rating_bar);
+
 
         //Getting the username
         mUsername = getCurrentUsername();
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabaseReference = database.getReference(PostContentActivity.Database_Path);
         mRecyclerView = findViewById(R.id.my_recycler_view);
-        mRecyclerView.setFocusable(false);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mVideoList = new ArrayList<>();
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -65,9 +69,8 @@ public class MainActivity extends AppCompatActivity {
                     try{
 
                         VideoUploadInfo videoUploadInfo = dataSnapshot.getValue(VideoUploadInfo.class);
-                        mVideoList.add(videoUploadInfo);
-                        mRecyclerView.scrollToPosition(mVideoList.size()-1);
-                        mAdapter.notifyItemInserted(mVideoList.size()-1);
+                        mVideoList.add(0,videoUploadInfo);
+                        mAdapter.notifyItemInserted(0);
 
                     }catch(Exception ex){
                         Log.e("TalentApp", ex.getMessage());
