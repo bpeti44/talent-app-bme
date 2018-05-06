@@ -1,5 +1,6 @@
 package com.bartonpeter.talentapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -64,10 +65,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Sign in button
     public void signInExistingUser(View v){
         attemptLogin();
     }
 
+    //Firebase authentication
     private void attemptLogin() {
 
         String email = mEmailView.getText().toString();
@@ -76,22 +79,20 @@ public class LoginActivity extends AppCompatActivity {
         if (email.equals("") || password.equals("")) {
             return;
         }
-
         Toast.makeText(this, "Login in progress", Toast.LENGTH_SHORT).show();
 
-        // TODO: Use FirebaseAuth to sign in with email & password
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("TalentApp", "signInWithEmail onComplete()" + task.isSuccessful());
 
                 if (!task.isSuccessful()) {
                     Log.d("TalentApp", "signInWithEmail failed: " + task.getException());
                     showErrorDialoge("Invalid password or username");
 
                 } else {
-                    Log.d("TalentApp","Fasza");
-                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    Log.d("TalentApp", "Sign in complete - " + task.isSuccessful());
+                    //Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent myIntent = new Intent(LoginActivity.this, ChooseActivity.class);
                     finish();
                     startActivity(myIntent);
                 }
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //Login Failed ErrorDialog
     private void showErrorDialoge(String message){
         new AlertDialog.Builder(this)
                 .setTitle("Login failed")
@@ -109,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                 .show();
     }
 
+    //Intent for directing user to RegisterActivity
     public void registerNewUser(View v){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);

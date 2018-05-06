@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +30,9 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".PostContentActivity" />
+        <activity android:name=".ChooseActivity" />
+        <activity android:name=".SummerMainActivity" />
+        <activity android:name=".SpringMainActivity"></activity>
     </application>
 
 </manifest>

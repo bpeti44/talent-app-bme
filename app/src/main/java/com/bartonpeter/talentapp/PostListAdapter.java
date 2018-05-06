@@ -2,6 +2,7 @@ package com.bartonpeter.talentapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.Rating;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -93,16 +95,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
             }
         });
 
-        holder.ratingbar.setOnTouchListener(new View.OnTouchListener() {
+
+
+        /*holder.ratingbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    v.performClick();
-                    Log.d("TalentApp","ratingbar ontouch");
+                    Log.d("TalentApp","ratingbar value = " + holder.ratingbar.getRating());
                 }
                 return true;
             }
-        });
+        });*/
 
         holder.videoview.setOnTouchListener(new View.OnTouchListener() {
             @Override

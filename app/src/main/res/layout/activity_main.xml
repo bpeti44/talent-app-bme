@@ -13,8 +13,7 @@
         android:orientation="horizontal"
         android:gravity="right"
         android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        >
+        android:paddingTop="8dp">
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="0dp"

@@ -69,8 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     try{
 
                         VideoUploadInfo videoUploadInfo = dataSnapshot.getValue(VideoUploadInfo.class);
-                        mVideoList.add(0,videoUploadInfo);
-                        mAdapter.notifyItemInserted(0);
+                        if (videoUploadInfo.getSeason().equals("Summer")) {
+                            mVideoList.add(0,videoUploadInfo);
+                            mAdapter.notifyItemInserted(0);
+                        }
+
 
                     }catch(Exception ex){
                         Log.e("TalentApp", ex.getMessage());

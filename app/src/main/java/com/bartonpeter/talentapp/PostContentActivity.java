@@ -55,6 +55,8 @@ public class PostContentActivity extends AppCompatActivity {
     private StorageReference videoRef;
     private StorageReference mStorageReference;
     private FirebaseAuth mAuth;
+    private String season;
+    private EditText mSeasonText;
 
     public static String Storage_Path = "All_Video_Uploads/";
     public static String Database_Path = "All_Video_Uploads_Database/";
@@ -69,7 +71,7 @@ public class PostContentActivity extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-
+        mSeasonText = findViewById(R.id.season);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -112,7 +114,7 @@ public class PostContentActivity extends AppCompatActivity {
             }
         }else if(requestCode == CAPTURE_VIDEO_REQUEST){
             if(resultCode == RESULT_OK){
-
+                mUri = null;
                 Toast.makeText(this,"Video Recorded", Toast.LENGTH_SHORT).show();
             }
         }
@@ -126,6 +128,8 @@ public class PostContentActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
+            season = mSeasonText.getText().toString();
+
             StorageReference storageReference2nd = mStorageReference.child(Storage_Path + System.currentTimeMillis() + ".mp4");
 
             storageReference2nd.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -134,13 +138,14 @@ public class PostContentActivity extends AppCompatActivity {
 
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Video Uploaded Successfully ", Toast.LENGTH_LONG).show();
-                    VideoUploadInfo videoUploadInfo = new VideoUploadInfo(mUsername, taskSnapshot.getDownloadUrl().toString());
+                    VideoUploadInfo videoUploadInfo = new VideoUploadInfo(mUsername, taskSnapshot.getDownloadUrl().toString(),season);
                     String VideoUploadID = mDatabaseReference.push().getKey();
 
                     mDatabaseReference.child(VideoUploadID).setValue(videoUploadInfo);
 
-                    Intent intent = new Intent(PostContentActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(PostContentActivity.this, MainActivity.class);
+                    //startActivity(intent);
+                    finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

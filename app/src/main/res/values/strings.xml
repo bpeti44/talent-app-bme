@@ -14,4 +14,8 @@
     <string name="upload">Upload</string>
     <string name="choose">Choose</string>
     <string name="take_a_photo">Take a photo</string>
+    <string name="author">Author</string>
+    <string name="spring">Spring</string>
+    <string name="summer">summer</string>
+    <string name="season">season</string>
 </resources>
