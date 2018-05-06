@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+
+    <Button
+        android:id="@+id/springButton"
+        android:layout_marginTop="128dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/spring"
+        android:onClick="springActivity"/>
+
+    <Button
+        android:id="@+id/summerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/springButton"
+        android:text="@string/summer"
+        android:onClick="summerActivity"/>
+
+
+
+</RelativeLayout>
