@@ -108,7 +108,6 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             createFirebaseUser();
-            Toast.makeText(this,"Registration succesful!",Toast.LENGTH_SHORT).show();
         }
 
 
@@ -123,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if(task.isSuccessful()){
+                    ToastMsg();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     finish();
                     startActivity(intent);
@@ -152,4 +152,8 @@ public class RegisterActivity extends AppCompatActivity {
                 .show();
     }
 
+
+    private void ToastMsg(){
+        Toast.makeText(this,"Registration succesful!", Toast.LENGTH_SHORT).show();
+    }
 }

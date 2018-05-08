@@ -20,8 +20,8 @@ public class ChooseActivity extends AppCompatActivity {
     }
 
     public void springActivity(View v){
-        Intent summerIntent = new Intent(this, SpringMainActivity.class);
-        startActivity(summerIntent);
+        Intent springIntent = new Intent(this, SpringMainActivity.class);
+        startActivity(springIntent);
     }
 
 

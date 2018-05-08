@@ -91,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     Log.d("TalentApp", "Sign in complete - " + task.isSuccessful());
-                    //Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                     Intent myIntent = new Intent(LoginActivity.this, ChooseActivity.class);
                     finish();
                     startActivity(myIntent);

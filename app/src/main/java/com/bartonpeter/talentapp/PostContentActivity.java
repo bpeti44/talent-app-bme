@@ -1,25 +1,21 @@
 package com.bartonpeter.talentapp;
 
-import android.*;
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.MediaController;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -34,8 +30,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
-
 public class PostContentActivity extends AppCompatActivity {
 
     public static final String USER_KEY = "USER_KEY";
@@ -45,21 +39,19 @@ public class PostContentActivity extends AppCompatActivity {
     final int REQUEST_CODE = 132;
 
 
-    private EditText mContentText;
-    private Button mPostButton;
     private String mUsername;
     private VideoView mVideoView;
 
     private Uri mUri;
     private DatabaseReference mDatabaseReference;
-    private StorageReference videoRef;
     private StorageReference mStorageReference;
     private FirebaseAuth mAuth;
-    private String season;
-    private EditText mSeasonText;
+    private String seasonText;
+    private Spinner dropdown;
 
     public static String Storage_Path = "All_Video_Uploads/";
     public static String Database_Path = "All_Video_Uploads_Database/";
+
 
 
     @Override
@@ -71,8 +63,6 @@ public class PostContentActivity extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-        mSeasonText = findViewById(R.id.season);
-
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -82,6 +72,13 @@ public class PostContentActivity extends AppCompatActivity {
 
         mVideoView = findViewById(R.id.videoView);
         Log.d("TalentApp","username: " + mUsername);
+
+
+        dropdown = findViewById(R.id.spinner1);
+        String[] items = new String[]{"Summer", "Spring"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
 
     }
 
@@ -128,23 +125,22 @@ public class PostContentActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            season = mSeasonText.getText().toString();
+            //seasonText = mSeasonText.getText().toString();
+            seasonText = dropdown.getSelectedItem().toString();
 
-            StorageReference storageReference2nd = mStorageReference.child(Storage_Path + System.currentTimeMillis() + ".mp4");
+            StorageReference videoRef = mStorageReference.child(Storage_Path + System.currentTimeMillis() + ".mp4");
 
-            storageReference2nd.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            videoRef.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Video Uploaded Successfully ", Toast.LENGTH_LONG).show();
-                    VideoUploadInfo videoUploadInfo = new VideoUploadInfo(mUsername, taskSnapshot.getDownloadUrl().toString(),season);
+                    VideoUploadInfo videoUploadInfo = new VideoUploadInfo(mUsername, taskSnapshot.getDownloadUrl().toString(), seasonText);
                     String VideoUploadID = mDatabaseReference.push().getKey();
 
                     mDatabaseReference.child(VideoUploadID).setValue(videoUploadInfo);
 
-                    //Intent intent = new Intent(PostContentActivity.this, MainActivity.class);
-                    //startActivity(intent);
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
